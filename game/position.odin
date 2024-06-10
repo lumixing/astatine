@@ -15,7 +15,7 @@ xy_to_lin :: proc(x, y, max: $T) -> T {
     return x * max + y
 }
 
-ivec2_to_vec :: proc(v: IVec2) -> Vec2 {
+ivec2_to_vec2 :: proc(v: IVec2) -> Vec2 {
     return Vec2{f32(v.x), f32(v.y)}
 }
 

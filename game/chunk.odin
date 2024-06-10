@@ -25,8 +25,6 @@ chunk_render :: proc(chunk: Chunk) {
         if block != .AIR {
             x := BLOCK_SIZE * (chunk.position.x * CHUNK_SIZE + i32(rbx))
             y := BLOCK_SIZE * (chunk.position.y * CHUNK_SIZE + i32(rby))
-            color := block_to_color(block)
-            // rl.DrawRectangle(x, y, BLOCK_SIZE, BLOCK_SIZE, color)
             rl.DrawTextureRec(texture, block_to_rect(block), {f32(x), f32(y)}, rl.WHITE)
         }
     }
