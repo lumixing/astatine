@@ -36,6 +36,15 @@ main :: proc() {
             texture = rl.LoadTextureFromImage(image)
         }
 
+        if rl.IsMouseButtonDown(.LEFT) && is_mouse_in_world_bounds(camera) {
+            block_pos := get_mouse_block_position(camera)
+            world_set_block(&world, block_pos, .AIR)
+        }
+        if rl.IsMouseButtonDown(.RIGHT) && is_mouse_in_world_bounds(camera) {
+            block_pos := get_mouse_block_position(camera)
+            world_set_block(&world, block_pos, .DIRT)
+        }
+
         player_input(player)
         entity_physics(player, world.colls[:])
         render_vec: Vec2 = {f32(rl.GetRenderWidth()), f32(rl.GetRenderHeight())}

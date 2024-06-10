@@ -21,6 +21,14 @@ world_new :: proc() -> World {
         append(&world.chunks, chunk)
     }
 
+    world_update_colls(&world)
+
+    return world
+}
+
+world_update_colls :: proc(world: ^World) {
+    clear(&world.colls)
+
     for chunk in world.chunks {
         for block, rbi in chunk.blocks {
             if block == .AIR do continue
@@ -30,8 +38,14 @@ world_new :: proc() -> World {
             append(&world.colls, IVec2{x, y})
         }
     }
+}
 
-    return world
+world_set_block :: proc(world: ^World, block_position: IVec2, block: Block) {
+    ci := xy_to_lin(block_position.x/CHUNK_SIZE, block_position.y/CHUNK_SIZE, WORLD_SIZE)
+    rbi := xy_to_lin(block_position.x%CHUNK_SIZE, block_position.y%CHUNK_SIZE, CHUNK_SIZE)
+    world.chunks[ci].blocks[rbi] = block
+
+    world_update_colls(world)
 }
 
 world_render :: proc(world: World) {

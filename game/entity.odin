@@ -84,6 +84,9 @@ entity_physics :: proc(entity: ^Entity, colls: []IVec2) {
                 should_ground = true
                 ent.velocity.y = 0
                 ent.position.y = f32(block_pos.y) - ent.size.y
+            case .Top:
+                ent.velocity.y = 0
+                ent.position.y = f32(block_pos.y) + BLOCK_SIZE
             case .Right:
                 ent.velocity.x = 0
                 ent.position.x = f32(block_pos.x) - BLOCK_SIZE
