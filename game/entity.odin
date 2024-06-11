@@ -11,6 +11,14 @@ Transform :: struct {
 
 EntityType :: union {
     ^Player,
+    ^Item,
+}
+
+Item :: struct {
+    using entity: Entity,
+    using transform: Transform,
+    using sprite: Sprite,
+    using body: DynamicBody,
 }
 
 new_entity :: proc($T: typeid, world: ^World) -> ^T {

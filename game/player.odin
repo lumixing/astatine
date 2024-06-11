@@ -28,7 +28,16 @@ player_input :: proc(player: ^Player, camera: rl.Camera2D, world: ^World) {
 
     if rl.IsMouseButtonDown(.LEFT) && is_mouse_in_world_bounds(camera) {
         block_pos := get_mouse_block_position(camera)
-        world_set_block(world, block_pos, .AIR)
+        block := world_get_block(world^, block_pos)
+        if block != .AIR {
+            world_set_block(world, block_pos, .AIR)
+            item := new_entity(Item, world)
+            item.position = ivec2_to_vec2(block_pos) * BLOCK_SIZE
+            item.rect = block_to_rect(block)
+            item.rect.width = 4
+            item.rect.height = 4
+            item.size = {4, 4}
+        }
     }
     if rl.IsMouseButtonDown(.RIGHT) && is_mouse_in_world_bounds(camera) {
         block_pos := get_mouse_block_position(camera)

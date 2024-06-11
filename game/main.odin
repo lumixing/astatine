@@ -1,5 +1,6 @@
 package game
 
+import "core:math"
 import la "core:math/linalg"
 import rl "vendor:raylib"
 
@@ -23,10 +24,17 @@ main :: proc() {
     texture = rl.LoadTextureFromImage(image)
 
     for !rl.WindowShouldClose() && true {
+        time := rl.GetTime()
         delta := rl.GetFrameTime()
 
         player_input(player, camera, &world)
-        entity_physics(player, world.colls[:], delta)
+        for &entity in world.entities {
+            entity_physics(&entity, world.colls[:], delta)
+            #partial switch ent in entity.type {
+                case ^Item:
+                    ent.offset.y = math.sin_f32(f32(time) * 5 + f32(ent.id)) - 1
+            }
+        }
 
         render_vec: Vec2 = {f32(rl.GetRenderWidth()), f32(rl.GetRenderHeight())}
         new_camera_position := (-player.position - player.size / 2) * camera.zoom + render_vec / 2
@@ -37,9 +45,12 @@ main :: proc() {
         rl.ClearBackground(rl.SKYBLUE)
 
         world_render(world)
-        entity_render(player^)
+        for entity in world.entities {
+            entity_render(entity)
+        }
 
         rl.EndMode2D()
+        rl.DrawFPS(0, 0)
         rl.EndDrawing()
     }
 }

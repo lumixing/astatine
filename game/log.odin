@@ -6,9 +6,9 @@ LogLevel :: enum {
     DEBUG, INFO, WARN, ERROR,
 }
 
-debug :: proc(str: string, args: ..any) {
+debug :: proc(args: ..any) {
     fmt.print("[DEBUG] ")
-    fmt.printfln(str, ..args)
+    fmt.println(..args)
 }
 
 info :: proc(str: string, args: ..any) {

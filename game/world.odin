@@ -1,6 +1,6 @@
 package game
 
-WORLD_SIZE :: 8
+WORLD_SIZE :: 4
 WORLD_SIZE_SQ :: WORLD_SIZE * WORLD_SIZE
 
 World :: struct {
@@ -38,6 +38,12 @@ world_update_colls :: proc(world: ^World) {
             append(&world.colls, IVec2{x, y})
         }
     }
+}
+
+world_get_block :: proc(world: World, block_position: IVec2) -> Block {
+    ci := xy_to_lin(block_position.x/CHUNK_SIZE, block_position.y/CHUNK_SIZE, WORLD_SIZE)
+    rbi := xy_to_lin(block_position.x%CHUNK_SIZE, block_position.y%CHUNK_SIZE, CHUNK_SIZE)
+    return world.chunks[ci].blocks[rbi]
 }
 
 world_set_block :: proc(world: ^World, block_position: IVec2, block: Block) {

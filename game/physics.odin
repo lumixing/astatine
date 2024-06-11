@@ -10,10 +10,8 @@ DynamicBody :: struct {
     grounded: bool,
 }
 
-entity_physics :: proc(entity: ^Entity, colls: []IVec2, delta: f32) {
-    switch ent in entity.type {
-    case ^Player:
-        ent.velocity.y = la.lerp(ent.velocity.y, 500, 2 * delta)
+yay :: proc(ent: $T, colls: []IVec2, delta: f32) {
+    ent.velocity.y = la.lerp(ent.velocity.y, 500, 2 * delta)
 
         if ent.input.x == 0 {
             ent.velocity.x = la.lerp(ent.velocity.x, 0, 20 * delta)
@@ -35,6 +33,11 @@ entity_physics :: proc(entity: ^Entity, colls: []IVec2, delta: f32) {
         should_ground := false
 
         for block_pos in colls {
+            dist := la.distance(ent.position, ivec2_to_vec2(block_pos))
+            if dist > 20 {
+                continue
+            }
+
             coll := collide_aabb(ent.position, ent.size, ivec2_to_vec2(block_pos), {BLOCK_SIZE, BLOCK_SIZE})
             #partial switch coll {
             case .Bottom:
@@ -54,6 +57,12 @@ entity_physics :: proc(entity: ^Entity, colls: []IVec2, delta: f32) {
         }
 
         ent.grounded = should_ground
+}
+
+entity_physics :: proc(entity: ^Entity, colls: []IVec2, delta: f32) {
+    switch ent in entity.type {
+    case ^Player: yay(ent, colls, delta)
+    case ^Item:   yay(ent, colls, delta)
     }
 }
 
