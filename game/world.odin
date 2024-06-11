@@ -35,11 +35,13 @@ world_gen :: proc(world: ^World) {
     blocks := WORLD_SIZE * CHUNK_SIZE
     for x in 0..<blocks {
         for y in 0..<blocks {
+            world_set_block(world, ivec2(x, y), .DIRT, true)
+
             n := ns.noise_2d(0, {f64(x), f64(y)} / NOISE_SCALE)
 
             block: Block
             if n < 0 do block = Block.AIR
-            else do block = Block.STONE
+            else do block = Block.DIRT
 
             world_set_block(world, ivec2(x, y), block)
         }
@@ -61,16 +63,24 @@ world_update_colls :: proc(world: ^World) {
     }
 }
 
-world_get_block :: proc(world: World, block_position: IVec2) -> Block {
+world_get_block :: proc(world: World, block_position: IVec2, wall := false) -> Block {
     ci := xy_to_lin(block_position.x/CHUNK_SIZE, block_position.y/CHUNK_SIZE, WORLD_SIZE)
     rbi := xy_to_lin(block_position.x%CHUNK_SIZE, block_position.y%CHUNK_SIZE, CHUNK_SIZE)
-    return world.chunks[ci].blocks[rbi]
+    if wall {
+        return world.chunks[ci].walls[rbi]
+    } else {
+        return world.chunks[ci].blocks[rbi]
+    }
 }
 
-world_set_block :: proc(world: ^World, block_position: IVec2, block: Block) {
+world_set_block :: proc(world: ^World, block_position: IVec2, block: Block, wall := false) {
     ci := xy_to_lin(block_position.x/CHUNK_SIZE, block_position.y/CHUNK_SIZE, WORLD_SIZE)
     rbi := xy_to_lin(block_position.x%CHUNK_SIZE, block_position.y%CHUNK_SIZE, CHUNK_SIZE)
-    world.chunks[ci].blocks[rbi] = block
+    if wall {
+        world.chunks[ci].walls[rbi] = block
+    } else {
+        world.chunks[ci].blocks[rbi] = block
+    }
 }
 
 world_render :: proc(world: World) {
