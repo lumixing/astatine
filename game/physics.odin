@@ -33,11 +33,6 @@ yay :: proc(ent: $T, colls: []IVec2, delta: f32) {
         should_ground := false
 
         for block_pos in colls {
-            dist := la.distance(ent.position, ivec2_to_vec2(block_pos))
-            if dist > 20 {
-                continue
-            }
-
             coll := collide_aabb(ent.position, ent.size, ivec2_to_vec2(block_pos), {BLOCK_SIZE, BLOCK_SIZE})
             #partial switch coll {
             case .Bottom:

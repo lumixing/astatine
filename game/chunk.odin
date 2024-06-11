@@ -11,13 +11,6 @@ Chunk :: struct {
     blocks: [CHUNK_SIZE_SQ]Block,
 }
 
-chunk_fill :: proc(chunk: ^Chunk) {
-    for &block in chunk.blocks {
-        block = rand.choice_enum(Block)
-        // block = .DIRT
-    }
-}
-
 chunk_render :: proc(chunk: Chunk) {
     for block, rbi in chunk.blocks {
         rbx, rby := lin_to_xy(rbi, CHUNK_SIZE)

@@ -5,10 +5,18 @@ import rl "vendor:raylib"
 Vec2 :: [2]f32
 IVec2 :: [2]i32
 
+ivec2 :: proc(x, y: $T) -> IVec2 {
+    return IVec2{i32(x), i32(y)}
+}
+
 lin_to_xy :: proc(lin, max: $T) -> (x, y: T) {
     x = lin / max
     y = lin % max
     return
+}
+
+vec2_to_lin :: proc(v: [2]$T, max: T) -> T {
+    return xy_to_lin(v.x, v.y, max)
 }
 
 xy_to_lin :: proc(x, y, max: $T) -> T {
@@ -37,4 +45,11 @@ get_mouse_block_position :: proc(camera: rl.Camera2D) -> IVec2 {
     world_position := rl.GetScreenToWorld2D(mouse_position, camera)
     block_position := world_position / BLOCK_SIZE
     return vec2_to_ivec2(block_position)
+}
+
+is_chunk_in_world_bounds :: proc(chunk_position: IVec2) -> bool {
+    return chunk_position.x >= 0 &&
+        chunk_position.y >= 0 &&
+        chunk_position.x < WORLD_SIZE &&
+        chunk_position.y < WORLD_SIZE
 }
