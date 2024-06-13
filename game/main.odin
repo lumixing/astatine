@@ -28,6 +28,7 @@ main :: proc() {
     rl.InitWindow(800, 600, "astatine [debug]")
     defer rl.CloseWindow()
     rl.SetTargetFPS(60)
+    rl.GuiLoadStyle("assets/light.rgs")
 
     init()
 
@@ -47,7 +48,7 @@ main :: proc() {
                     buf: [256]byte
                     str = cstring(&buf[0])
                 }
-                if rl.GuiTextBox({0, render_vec.y-20, 300, 20}, str, 256, true) {
+                if rl.GuiTextBox({0, render_vec.y-32, 512, 32}, str, 256, true) {
                     console_command()
                     buf: [256]byte
                     str = cstring(&buf[0])
