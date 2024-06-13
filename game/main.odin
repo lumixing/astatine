@@ -7,6 +7,7 @@ import rl "vendor:raylib"
 CAMERA_LERP :: 13
 
 texture: rl.Texture2D
+big_texture: rl.Texture2D
 camera: rl.Camera2D
 render_vec: Vec2
 world: World
@@ -67,6 +68,9 @@ init :: proc() {
 
     image := rl.LoadImage("assets/block_atlas.png")
     texture = rl.LoadTextureFromImage(image)
+    big_image := image
+    rl.ImageResizeNN(&big_image, 256*4, 256*4)
+    big_texture = rl.LoadTextureFromImage(big_image)
 }
 
 input :: proc() {
@@ -106,6 +110,7 @@ render :: proc() {
 }
 
 render_ui :: proc() {
+    render_player_inventory(player^)
     rl.DrawFPS(0, 0)
     render_debug_ui()
 }

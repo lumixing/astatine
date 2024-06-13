@@ -5,6 +5,7 @@ Item :: struct {
     using transform: Transform,
     using sprite: Sprite,
     using body: DynamicBody,
+    using inventory_item: InventoryItem,
 }
 
 item_pickup :: proc(entity: ^Entity, world: ^World) {
@@ -21,6 +22,7 @@ check_item_coll :: proc(ent: $T, world: ^World) {
         coll := collide_aabb(ent.position, ent.size, item.position, item.size)
         if coll == .None do continue
 
+        inventory_add_item(&ent.inventory, {item.inventory_item.item, 1})
         ordered_remove(&world.entities, i)
     }
 }

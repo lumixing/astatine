@@ -40,8 +40,9 @@ world_gen :: proc(world: ^World) {
             n := ns.noise_2d(0, {f64(x), f64(y)} / NOISE_SCALE)
 
             block: Block
-            if n < 0 do block = Block.AIR
-            else do block = Block.DIRT
+            if n < 0 do block = .AIR
+            else if n < 0.3 do block = .DIRT
+            else do block = .STONE
 
             world_set_block(world, ivec2(x, y), block)
         }
