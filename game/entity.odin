@@ -14,13 +14,6 @@ EntityType :: union {
     ^Item,
 }
 
-Item :: struct {
-    using entity: Entity,
-    using transform: Transform,
-    using sprite: Sprite,
-    using body: DynamicBody,
-}
-
 new_entity :: proc($T: typeid, world: ^World) -> ^T {
     @(static) id := 0
     id += 1

@@ -84,6 +84,7 @@ update :: proc() {
     player_update_chunks(player^, &world)
     for &entity in world.entities {
         entity_physics(&entity, world.colls[:], delta)
+        item_pickup(&entity, &world)
         #partial switch ent in entity.type {
             case ^Item:
                 ent.offset.y = math.sin_f32(f32(time) * 5 + f32(ent.id)) - 1
@@ -106,4 +107,5 @@ render :: proc() {
 
 render_ui :: proc() {
     rl.DrawFPS(0, 0)
+    render_debug_ui()
 }

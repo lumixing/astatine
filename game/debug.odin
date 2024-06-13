@@ -50,3 +50,6 @@ console_command :: proc() {
     }
 }
 
+render_debug_ui :: proc() {
+    rl.GuiLabel({0, 20, 100, 20}, "hi")
+}
