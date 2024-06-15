@@ -15,9 +15,9 @@ debug_render :: proc() {
 }
 
 debug_input :: proc() {
-    if rl.IsKeyPressed(.MINUS) do camera.zoom -= 0.5
-    if rl.IsKeyPressed(.EQUAL) do camera.zoom += 0.5
-    if rl.IsKeyPressed(.BACKSPACE) do camera.zoom = 2
+    if rl.IsKeyPressed(.MINUS) do game.camera.zoom -= 0.5
+    if rl.IsKeyPressed(.EQUAL) do game.camera.zoom += 0.5
+    if rl.IsKeyPressed(.BACKSPACE) do game.camera.zoom = 2
     if rl.IsKeyPressed(.SEMICOLON) do console_shown = true
 }
 
@@ -31,31 +31,31 @@ render_chunk_borders :: proc() {
             f32(y * CHUNK_SIZE * BLOCK_SIZE),
             f32(CHUNK_SIZE * BLOCK_SIZE),
             f32(CHUNK_SIZE * BLOCK_SIZE),
-        }, 0.5/camera.zoom, rl.PINK)
+        }, 0.5/game.camera.zoom, rl.PINK)
     }
 }
 
 console_command :: proc() {
-    if str == "chunk" {
+    switch str {
+    case "chunk":
         show_chunk_border = !show_chunk_border
-    } else if str == "killitems" {
-        // this is either scuffed or genius, ordered_remove has weird behavior!
-        ents := slice.filter(world.entities[:], filter_items)
-        world.entities = slice.to_dynamic(ents)
-
+    case "killitems", "ki":
+        ents := slice.filter(game.world.entities[:], filter_items)
+        game.world.entities = slice.to_dynamic(ents)
+    
         filter_items :: proc(ent: Entity) -> bool {
             _, is_item := ent.type.(^Item)
             return !is_item
         }   
-    } else if str == "top" {
-        player.transform.position.y = -16
-    } else if str == "clear" {
-        player.inventory = {}
+    case "top":
+        game.player.transform.position.y = -16
+    case "clear":
+        game.player.inventory = {}
     }
 }
 
 render_debug_ui :: proc() {
-    rl.GuiLabel({0, 20, 100, 20}, cfmt("ent:", len(world.entities)))
+    rl.GuiLabel({0, 20, 100, 20}, cfmt("ent:", len(game.world.entities)))
 }
 
 cfmt :: proc(args: ..any) -> cstring {

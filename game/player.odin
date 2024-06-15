@@ -90,8 +90,8 @@ render_player_inventory :: proc(player: Player) {
     @(static) v: Vec2
     w: f32 = 32*9+8*10
     h: f32 = 32+2*8
-    x: f32 = (render_vec.x-w)/2
-    y: f32 = render_vec.y-h
+    x: f32 = (game.screen.x-w)/2
+    y: f32 = game.screen.y-h
     rl.GuiGrid({x, y, w, h}, "inventory", 1, 9, &v)
     
     for item, i in player.inventory.data {
@@ -106,12 +106,11 @@ render_player_inventory :: proc(player: Player) {
         amount_text := strings.clone_to_cstring(fmt.tprint(item.amount))
         defer delete(amount_text)
 
-        rl.DrawTextureRec(big_texture, rect, {ix, iy}, rl.WHITE)
+        rl.DrawTextureRec(game.textures.big_blocks, rect, {ix, iy}, rl.WHITE)
         rl.DrawText(amount_text, i32(ix), i32(iy), 20, rl.BLACK)
 
         if player.inventory.selected == i {
             rl.DrawRectangleLinesEx({ix-8, iy-8, 32+16, 32+16}, 2, rl.RED)
         }
     }
-    // debug(v)
 }

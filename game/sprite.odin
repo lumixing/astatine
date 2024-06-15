@@ -8,7 +8,7 @@ Sprite :: struct {
 }
 
 draw :: proc(ent: $T) {
-    rl.DrawTextureRec(texture, ent.sprite.rect, ent.transform.position + ent.sprite.offset, rl.WHITE)
+    rl.DrawTextureRec(game.textures.blocks, ent.sprite.rect, ent.transform.position + ent.sprite.offset, rl.WHITE)
 }
 
 // this is so fucking stupid???

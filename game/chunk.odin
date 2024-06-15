@@ -13,17 +13,18 @@ Chunk :: struct {
 
 chunk_render :: proc(chunk: Chunk) {
     for rbi in 0..<CHUNK_SIZE_SQ {
-        block := chunk.blocks[rbi]
-        wall := chunk.walls[rbi]
         rbx, rby := lin_to_xy(rbi, CHUNK_SIZE)
-
         x := BLOCK_SIZE * (chunk.position.x * CHUNK_SIZE + i32(rbx))
         y := BLOCK_SIZE * (chunk.position.y * CHUNK_SIZE + i32(rby))
+
+        block := chunk.blocks[rbi]
         if block != .AIR {
-            rl.DrawTextureRec(texture, block_to_rect(block), {f32(x), f32(y)}, rl.WHITE)
+            rl.DrawTextureRec(game.textures.blocks, block_to_rect(block), {f32(x), f32(y)}, rl.WHITE)
         }
+        
+        wall := chunk.walls[rbi]
         if wall != .AIR && block == .AIR {
-            rl.DrawTextureRec(texture, block_to_rect(wall), {f32(x), f32(y)}, rl.GRAY)
+            rl.DrawTextureRec(game.textures.blocks, block_to_rect(wall), {f32(x), f32(y)}, rl.GRAY)
         }
     }
 }
