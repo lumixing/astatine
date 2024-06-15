@@ -1,7 +1,6 @@
 package game
 
 import rl "vendor:raylib"
-import rand "core:math/rand"
 
 CHUNK_SIZE :: 16
 CHUNK_SIZE_SQ :: CHUNK_SIZE * CHUNK_SIZE

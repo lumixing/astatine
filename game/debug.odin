@@ -1,6 +1,8 @@
 package game
 
+import "core:fmt"
 import "core:slice"
+import "core:strings"
 import rl "vendor:raylib"
 
 buf: [256]byte
@@ -53,5 +55,9 @@ console_command :: proc() {
 }
 
 render_debug_ui :: proc() {
-    rl.GuiLabel({0, 20, 100, 20}, "hi")
+    rl.GuiLabel({0, 20, 100, 20}, cfmt("ent:", len(world.entities)))
+}
+
+cfmt :: proc(args: ..any) -> cstring {
+    return strings.clone_to_cstring(fmt.tprint(..args))
 }

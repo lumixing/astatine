@@ -8,6 +8,7 @@ Block :: enum {
     AIR, GRASS, DIRT, STONE,
 }
 
+// padded atlas
 block_to_rect :: proc(block: Block) -> rl.Rectangle {
     switch block {
         case .AIR:   return {}

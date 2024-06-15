@@ -29,7 +29,7 @@ player_input :: proc(player: ^Player, camera: rl.Camera2D, world: ^World) {
     if rl.IsKeyDown(.S) do player.input.y += 1
     if rl.IsKeyDown(.W) do player.input.y -= 1
 
-    player.selected += int(rl.GetMouseWheelMove())
+    player.selected -= int(rl.GetMouseWheelMove())
     if player.selected < 0 do player.selected = 8
     if player.selected > 8 do player.selected = 0
 
