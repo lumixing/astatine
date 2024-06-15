@@ -11,47 +11,47 @@ DynamicBody :: struct {
 }
 
 yay :: proc(ent: $T, colls: []IVec2, delta: f32) {
-    ent.velocity.y = la.lerp(ent.velocity.y, 500, 2 * delta)
+    ent.body.velocity.y = la.lerp(ent.body.velocity.y, 500, 2 * delta)
 
-        if ent.input.x == 0 {
-            ent.velocity.x = la.lerp(ent.velocity.x, 0, 20 * delta)
+        if ent.body.input.x == 0 {
+            ent.body.velocity.x = la.lerp(ent.body.velocity.x, 0, 20 * delta)
         } else {
-            ent.velocity.x = la.lerp(ent.velocity.x, ent.input.x * 200, 10 * delta)
+            ent.body.velocity.x = la.lerp(ent.body.velocity.x, ent.body.input.x * 200, 10 * delta)
         }
 
-        if math.abs(ent.velocity.x) < 0.1 {
-            ent.velocity.x = 0
+        if math.abs(ent.body.velocity.x) < 0.1 {
+            ent.body.velocity.x = 0
         }
 
-        if ent.input.y == -1 && ent.grounded {
-            ent.velocity.y = -220
-            ent.grounded = false
+        if ent.body.input.y == -1 && ent.body.grounded {
+            ent.body.velocity.y = -220
+            ent.body.grounded = false
         }
 
-        ent.position += ent.velocity * delta
+        ent.transform.position += ent.body.velocity * delta
 
         should_ground := false
 
         for block_pos in colls {
-            coll := collide_aabb(ent.position, ent.size, ivec2_to_vec2(block_pos), {BLOCK_SIZE, BLOCK_SIZE})
+            coll := collide_aabb(ent.transform.position, ent.body.size, ivec2_to_vec2(block_pos), {BLOCK_SIZE, BLOCK_SIZE})
             #partial switch coll {
             case .Bottom:
                 should_ground = true
-                ent.velocity.y = 0
-                ent.position.y = f32(block_pos.y) - ent.size.y
+                ent.body.velocity.y = 0
+                ent.transform.position.y = f32(block_pos.y) - ent.body.size.y
             case .Top:
-                ent.velocity.y = 0
-                ent.position.y = f32(block_pos.y) + BLOCK_SIZE
+                ent.body.velocity.y = 0
+                ent.transform.position.y = f32(block_pos.y) + BLOCK_SIZE
             case .Right:
-                ent.velocity.x = 0
-                ent.position.x = f32(block_pos.x) - BLOCK_SIZE
+                ent.body.velocity.x = 0
+                ent.transform.position.x = f32(block_pos.x) - BLOCK_SIZE
             case .Left:
-                ent.velocity.x = 0
-                ent.position.x = f32(block_pos.x) + ent.size.x
+                ent.body.velocity.x = 0
+                ent.transform.position.x = f32(block_pos.x) + ent.body.size.x
             }
         }
 
-        ent.grounded = should_ground
+        ent.body.grounded = should_ground
 }
 
 entity_physics :: proc(entity: ^Entity, colls: []IVec2, delta: f32) {

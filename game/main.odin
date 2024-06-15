@@ -91,12 +91,12 @@ update :: proc() {
         item_pickup(&entity, &world)
         #partial switch ent in entity.type {
             case ^Item:
-                ent.offset.y = math.sin_f32(f32(time) * 5 + f32(ent.id)) - 1
+                ent.sprite.offset.y = math.sin_f32(f32(time) * 5 + f32(ent.entity.id)) - 1
         }
     }
 
     render_vec = {f32(rl.GetRenderWidth()), f32(rl.GetRenderHeight())}
-    new_camera_position := (-player.position - player.size / 2) * camera.zoom + render_vec / 2
+    new_camera_position := (-player.transform.position - player.body.size / 2) * camera.zoom + render_vec / 2
     camera.offset = la.lerp(camera.offset, new_camera_position, CAMERA_LERP * delta)
 }
 

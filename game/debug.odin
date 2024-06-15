@@ -48,7 +48,7 @@ console_command :: proc() {
             return !is_item
         }   
     } else if str == "top" {
-        player.position.y = -16
+        player.transform.position.y = -16
     } else if str == "clear" {
         player.inventory = {}
     }

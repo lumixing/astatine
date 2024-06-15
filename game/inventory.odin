@@ -20,7 +20,7 @@ inventory_add_item :: proc(inventory: ^Inventory, item: InventoryItem) {
 
 inventory_get_item_index :: proc(inventory: Inventory, item: Block) -> Maybe(int) {
     for it, i in inventory.data {
-        if it.item == item { // cant do item.item :(, maybe ditch using
+        if it.item == item {
             return i
         }
     }

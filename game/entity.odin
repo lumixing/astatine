@@ -19,10 +19,10 @@ new_entity :: proc($T: typeid, world: ^World) -> ^T {
     id += 1
 
     entity := new(T)
-    entity.id = id
-    entity.type = entity
+    entity.entity.id = id
+    entity.entity.type = entity
 
-    append(&world.entities, entity)
+    append(&world.entities, entity.entity)
 
     return entity
 }
