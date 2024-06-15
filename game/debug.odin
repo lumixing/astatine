@@ -5,7 +5,9 @@ import "core:slice"
 import "core:strings"
 import rl "vendor:raylib"
 
-buf: [256]byte
+CONSOLE_BUFFER_SIZE :: 256
+
+buf: [CONSOLE_BUFFER_SIZE]byte
 str := cstring(&buf[0])
 console_shown := false
 show_chunk_border := false
@@ -60,4 +62,14 @@ render_debug_ui :: proc() {
 
 cfmt :: proc(args: ..any) -> cstring {
     return strings.clone_to_cstring(fmt.tprint(..args))
+}
+
+string_to_buffer :: proc(cstr: cstring) -> [CONSOLE_BUFFER_SIZE]byte {
+    buf: [CONSOLE_BUFFER_SIZE]byte
+    str := string(cstr)
+    for char, i in str {
+        if i >= CONSOLE_BUFFER_SIZE do break
+        buf[i] = byte(char)
+    }
+    return buf
 }

@@ -14,7 +14,7 @@ EntityType :: union {
     ^Item,
 }
 
-new_entity :: proc($T: typeid, world: ^World) -> ^T {
+new_entity :: proc($T: typeid) -> ^T {
     @(static) id := 0
     id += 1
 
@@ -22,7 +22,7 @@ new_entity :: proc($T: typeid, world: ^World) -> ^T {
     entity.entity.id = id
     entity.entity.type = entity
 
-    append(&world.entities, entity.entity)
+    append(&game.world.entities, entity.entity)
 
     return entity
 }

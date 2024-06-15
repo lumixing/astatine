@@ -31,18 +31,18 @@ vec2_to_ivec2 :: proc(v: Vec2) -> IVec2 {
     return IVec2{i32(v.x), i32(v.y)}
 }
 
-is_mouse_in_world_bounds :: proc(camera: rl.Camera2D) -> bool {
+is_mouse_in_world_bounds :: proc() -> bool {
     mouse_position := rl.GetMousePosition()
-    world_position := rl.GetScreenToWorld2D(mouse_position, camera)
+    world_position := rl.GetScreenToWorld2D(mouse_position, game.camera)
     return world_position.x >= 0 &&
         world_position.y >= 0 &&
         world_position.x < WORLD_SIZE * CHUNK_SIZE * BLOCK_SIZE &&
         world_position.y < WORLD_SIZE * CHUNK_SIZE * BLOCK_SIZE
 }
 
-get_mouse_block_position :: proc(camera: rl.Camera2D) -> IVec2 {
+get_mouse_block_position :: proc() -> IVec2 {
     mouse_position := rl.GetMousePosition()
-    world_position := rl.GetScreenToWorld2D(mouse_position, camera)
+    world_position := rl.GetScreenToWorld2D(mouse_position, game.camera)
     block_position := world_position / BLOCK_SIZE
     return vec2_to_ivec2(block_position)
 }
