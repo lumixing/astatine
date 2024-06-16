@@ -1,5 +1,6 @@
 package game
 
+import "core:fmt"
 import rl "vendor:raylib"
 
 Vec2 :: [2]f32
@@ -29,6 +30,10 @@ ivec2_to_vec2 :: proc(v: IVec2) -> Vec2 {
 
 vec2_to_ivec2 :: proc(v: Vec2) -> IVec2 {
     return IVec2{i32(v.x), i32(v.y)}
+}
+
+vec2_str :: proc(v: Vec2) -> string {
+    return fmt.tprintf("[%.1f, %.1f]", v.x, v.y)
 }
 
 is_mouse_in_world_bounds :: proc() -> bool {

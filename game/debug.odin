@@ -58,7 +58,16 @@ console_command :: proc() {
 }
 
 render_debug_ui :: proc() {
-    rl.GuiLabel({0, 20, 100, 20}, cfmt("ent:", len(game.world.entities)))
+    strs := []cstring{
+        cfmt("pos:", vec2_str(game.player.transform.position)),
+        cfmt("vel:", vec2_str(game.player.body.velocity)),
+        cfmt("ent:", len(game.world.entities)),
+        cfmt("chunks:", len(game.world.loaded_chunks)),
+    }
+
+    for str, i in strs {
+        rl.DrawText(str, 0, 20+20*i32(i), 20, rl.WHITE)
+    }
 }
 
 cfmt :: proc(args: ..any) -> cstring {
