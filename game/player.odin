@@ -34,21 +34,18 @@ player_input :: proc() {
     if rl.IsMouseButtonDown(.LEFT) && is_mouse_in_world_bounds() {
         block_pos := get_mouse_block_position()
         block := world_get_block(block_pos)
+
         if block != .AIR {
             world_set_block(block_pos, .AIR)
-            item := new_entity(Item)
-            item.transform.position = ivec2_to_vec2(block_pos) * BLOCK_SIZE
-            item.sprite.rect = block_to_rect(block)
-            item.sprite.rect.width = 4
-            item.sprite.rect.height = 4
-            item.body.size = {4, 4}
-            item.inventory_item = {block, 1}
+            item_spawn(ivec2_to_vec2(block_pos) * BLOCK_SIZE, block)
             world_update_colls()
         }
     }
+
     if rl.IsMouseButtonDown(.RIGHT) && is_mouse_in_world_bounds() {
         block_pos := get_mouse_block_position()
         block := world_get_block(block_pos)
+
         current_item := inventory_get_current(game.player.inventory)
         if block == .AIR && current_item.item != .AIR {
             world_set_block(block_pos, current_item.item)
@@ -71,7 +68,7 @@ player_update_chunks :: proc() {
     clear(&game.world.loaded_chunks)
 
     for x in -4..=4 {
-        for y in -2..=3 {
+        for y in -3..=3 {
             new_chunk_position := chunk_position + ivec2(x, y)
             if !is_chunk_in_world_bounds(new_chunk_position) {
                 continue
@@ -84,7 +81,7 @@ player_update_chunks :: proc() {
     world_update_colls()
 }
 
-render_player_inventory :: proc() {
+player_render_inventory :: proc() {
     @(static) v: Vec2
     w: f32 = 32*9+8*10
     h: f32 = 32+2*8

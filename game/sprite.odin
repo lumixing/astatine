@@ -7,14 +7,14 @@ Sprite :: struct {
     rect: rl.Rectangle,
 }
 
-draw :: proc(ent: $T) {
+@(private="file")
+entity_render_atom :: proc(ent: $T) {
     rl.DrawTextureRec(game.textures.blocks, ent.sprite.rect, ent.transform.position + ent.sprite.offset, rl.WHITE)
 }
 
-// this is so fucking stupid???
 entity_render :: proc(entity: Entity) {
     switch ent in entity.type {
-    case ^Player: draw(ent)
-    case ^Item:   draw(ent)
+    case ^Player: entity_render_atom(ent)
+    case ^Item:   entity_render_atom(ent)
     }
 }

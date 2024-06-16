@@ -25,6 +25,7 @@ world_new :: proc() {
     world_update_colls()
 }
 
+@(private="file")
 world_gen :: proc() {
     NOISE_SCALE :: 10
 
@@ -80,9 +81,15 @@ world_set_block :: proc(block_position: IVec2, block: Block, wall := false) {
     }
 }
 
-world_render :: proc() {
+world_render_loaded_chunks :: proc() {
     for ci in game.world.loaded_chunks {
         chunk := game.world.chunks[ci]
         chunk_render(chunk)
+    }
+}
+
+world_render_entities :: proc() {
+    for entity in game.world.entities {
+        entity_render(entity)
     }
 }

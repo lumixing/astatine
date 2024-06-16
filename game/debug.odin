@@ -23,6 +23,7 @@ debug_input :: proc() {
     if rl.IsKeyPressed(.SEMICOLON) do console_shown = true
 }
 
+@(private="file")
 render_chunk_borders :: proc() {
     if !show_chunk_border do return
 

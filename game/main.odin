@@ -1,6 +1,5 @@
 package game
 
-import "core:math"
 import la "core:math/linalg"
 import rl "vendor:raylib"
 
@@ -61,7 +60,6 @@ main :: proc() {
 init :: proc() {
     game.camera = rl.Camera2D{{}, {}, 0, 2}
     world_new()
-    // game.world = world_new()
     game.player = player_new()
 
     image := rl.LoadImage("assets/block_atlas.png")
@@ -81,35 +79,30 @@ input :: proc() {
 }
 
 update :: proc() {
-    time := rl.GetTime()
+    time := f32(rl.GetTime())
     delta := rl.GetFrameTime()
+    game.screen = {f32(rl.GetRenderWidth()), f32(rl.GetRenderHeight())}
 
     player_update_chunks()
     for &entity in game.world.entities {
         entity_physics(&entity, delta)
         item_pickup(&entity)
-        #partial switch ent in entity.type {
-            case ^Item:
-                ent.sprite.offset.y = math.sin_f32(f32(time) * 5 + f32(ent.entity.id)) - 1
-        }
+        item_animation(&entity, time)
     }
 
-    game.screen = {f32(rl.GetRenderWidth()), f32(rl.GetRenderHeight())}
     new_camera_position := (-game.player.transform.position - game.player.body.size / 2) * game.camera.zoom + game.screen / 2
     game.camera.offset = la.lerp(game.camera.offset, new_camera_position, CAMERA_LERP * delta)
 }
 
 render :: proc() {
-    world_render()
-    for entity in game.world.entities {
-        entity_render(entity)
-    }
+    world_render_loaded_chunks()
+    world_render_entities()
 
     debug_render()
 }
 
 render_ui :: proc() {
-    render_player_inventory()
+    player_render_inventory()
     rl.DrawFPS(0, 0)
     render_debug_ui()
 }
